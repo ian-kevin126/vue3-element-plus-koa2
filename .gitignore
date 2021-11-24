@@ -5,3 +5,4 @@ dist-ssr
 *.local
 ./client/node_modules
 ./server/node_modules
+./server/logs
