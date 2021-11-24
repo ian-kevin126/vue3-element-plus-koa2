@@ -77,6 +77,9 @@ function request(options) {
 
   // 是否是mock请求
   let isMock = config.mock
+
+  // api/index.js 中的局部mock优先级最高，如果mock为true，那就是mock数据，
+  // 为false的时候，再去看全局的config/index.js里面的mock是否为true
   if (typeof options.mock != 'undefined') {
     isMock = options.mock
   }
