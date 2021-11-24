@@ -4,7 +4,7 @@ const routes = [
   {
     name: 'home',
     path: '/',
-    component: () => import('./../views/Home.vue'),
+    component: () => import('../components/Home.vue'),
     redirect: '/welcome',
     // meta可以配置一些跳转过程中更改页面标题，角色权限等
     meta: {

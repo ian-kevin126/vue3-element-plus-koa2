@@ -37,6 +37,8 @@ app.use(async (ctx, next) => {
   // await next()
   // const ms = new Date() - start
   // console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+
+  // 在服务端调试后台打印前端的入参数据，方便调试和排查错误
   log4js.info(`get params:${JSON.stringify(ctx.request.query)}`)
   log4js.info(`post params:${JSON.stringify(ctx.request.body)}`)
   await next().catch((err) => {
@@ -49,7 +51,7 @@ app.use(async (ctx, next) => {
   })
 })
 
-// 注意定义路由前缀，否则前端会请求报错
+// 一级路由，定义路由前缀，匹配前端的请求
 router.prefix('/api')
 
 // 加载二级路由
