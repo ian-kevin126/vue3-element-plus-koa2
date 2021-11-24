@@ -10,7 +10,6 @@ export default {
       url: '/users/login',
       method: 'post',
       data: params,
-      mock: true,
     })
   },
 }

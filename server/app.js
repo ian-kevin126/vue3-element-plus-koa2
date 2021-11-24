@@ -6,12 +6,14 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const log4js = require('./utils/log4j')
-
-const index = require('./routes/index')
+const router = require('koa-router')()
 const users = require('./routes/users')
 
 // error handler
 onerror(app)
+
+// 连接数据库
+require('./config/db')
 
 // middlewares
 app.use(
@@ -47,9 +49,14 @@ app.use(async (ctx, next) => {
   })
 })
 
-// routes
-app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
+// 注意定义路由前缀，否则前端会请求报错
+router.prefix('/api')
+
+// 加载二级路由
+router.use(users.routes(), users.allowedMethods())
+
+// 加载全局路由，注意这一步也不可以漏写
+app.use(router.routes(), router.allowedMethods())
 
 // error-handling
 // app.on('error', (err, ctx) => {
