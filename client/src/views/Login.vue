@@ -69,6 +69,8 @@ export default {
         if (valid) {
           this.$api.login(this.user).then((res) => {
             console.log('res', res)
+            this.$store.commit('saveUserInfo', res)
+            this.$router.push('/welcome')
           })
         } else {
           return false
