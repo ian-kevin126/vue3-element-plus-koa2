@@ -1,13 +1,13 @@
 <script setup>
 import { ref } from 'vue'
-import {useRouter} from 'vue-router'
+import { useRouter } from 'vue-router'
 
 defineProps({
-  msg: String
+  msg: String,
 })
 
 const count = ref(0)
-const router = useRouter();
+const router = useRouter()
 const goLogin = () => {
   router.push('/login')
 }
@@ -16,12 +16,8 @@ const goLogin = () => {
 <template>
   <div>
     welcome
+    <el-button @click="goLogin">去登录</el-button>
   </div>
-  <el-button @click="goLogin">去登录</el-button>
 </template>
 
-<style scoped>
-a {
-  color: #42b983;
-}
-</style>
+<style lang="scss"></style>

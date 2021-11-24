@@ -4,6 +4,7 @@ import 'element-plus/dist/index.css'
 import App from './App.vue'
 import router from './router'
 import request from './utils/request'
+import storage from './utils/storage'
 
 const app = createApp(App)
 // 分环境处理
@@ -17,8 +18,9 @@ if (process.env.NODE_ENV === 'dev') {
   // app.config.devtools = true
 }
 
-console.log('环境变量', import.meta.env)
+// console.log('环境变量', import.meta.env)
 // 全局引入element-plus
 app.use(ElementPlus)
 app.config.globalProperties.$request = request
+app.config.globalProperties.$storage = storage
 app.use(router).mount('#app')
