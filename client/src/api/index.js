@@ -9,6 +9,7 @@ export default {
       url: '/users/login',
       method: 'post',
       data: params,
+      mock: false,
     })
   },
   noticeCount(params) {

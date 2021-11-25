@@ -8,6 +8,9 @@ const logger = require('koa-logger')
 const log4js = require('./utils/log4j')
 const router = require('koa-router')()
 const users = require('./routes/users')
+const jwt = require('jsonwebtoken')
+const koajwt = require('koa-jwt')
+const { JWT_SECRET } = require('./config')
 
 // error handler
 onerror(app)
@@ -50,6 +53,12 @@ app.use(async (ctx, next) => {
     }
   })
 })
+
+app.use(
+  koajwt({ secret: JWT_SECRET }).unless({
+    path: [/^\/api\/users\/login/],
+  })
+)
 
 // 一级路由，定义路由前缀，匹配前端的请求
 router.prefix('/api')
