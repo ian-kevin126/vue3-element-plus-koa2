@@ -21,10 +21,11 @@
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "koa-views": "^6.2.0",
-    "pug": "^2.0.3",
-    "mongoose": "^5.11.19"
+    "mongoose": "^5.11.19",
+    "pug": "^2.0.3"
   },
   "devDependencies": {
+    "crypto": "^1.0.1",
     "log4js": "^6.3.0",
     "md5": "^2.3.0",
     "nodemon": "^1.19.1"

@@ -45,6 +45,7 @@ app.use(async (ctx, next) => {
   log4js.info(`get params:${JSON.stringify(ctx.request.query)}`)
   log4js.info(`post params:${JSON.stringify(ctx.request.body)}`)
   await next().catch((err) => {
+    // 当鉴权失败的时候，koa 服务返回的一些内容
     if (err.status == '401') {
       ctx.status = 200
       ctx.body = util.fail('Token认证失败', util.CODE.AUTH_ERROR)
@@ -54,6 +55,10 @@ app.use(async (ctx, next) => {
   })
 })
 
+// 使用 koa-jwt + jsonwebtoken 完成用户鉴权功能
+// 先明确一下两者的关系：koa-jwt 是负责对 token 进行验证的，而 jsonwebtoken 是负责生成 token 的。
+// 在入口文件中对login、register过滤不需要进行验证，通过isRevoked对其他的接口的token验证。
+// path 路径是设置匹配不需要鉴权的路由或目录，比如我这里设置了所有的 public 开头的、登录 xxxx/login 的请求都不需要鉴权。
 app.use(
   koajwt({ secret: JWT_SECRET }).unless({
     path: [/^\/api\/users\/login/],

@@ -6,7 +6,7 @@ const router = require('koa-router')()
 const User = require('./../models/userSchema')
 const util = require('./../utils/util')
 const jwt = require('jsonwebtoken')
-const { JWT_SECRET } = require('./../config')
+const { JWT_SECRET, EXPIRES_IN } = require('./../config')
 const md5 = require('md5')
 
 router.prefix('/users')
@@ -17,16 +17,17 @@ router.post('/login', async (ctx) => {
     /**
      * 返回数据库指定字段，有三种方式
      * 1. 'userId userName userEmail state role deptId roleList'
-     * 2. {userId:1,_id:0}
-     * 3. select('userId')
+     * 2. {userId:1,_id:0}，1代表返回，0代表不返回
+     * 3. findOne().select('userId')
      */
     const res = await User.findOne(
       {
         userName,
         // userPwd: md5(userPwd),
         userPwd: userPwd,
-      }
-      // 'userId userName userEmail state role deptId roleList'
+      },
+      // 指定返回的字段
+      'userId userName userEmail state role deptId roleList'
     )
 
     console.log('res', res)
@@ -35,13 +36,14 @@ router.post('/login', async (ctx) => {
     if (res) {
       const data = res._doc
 
-      // 对返回的信息进行加密，生成token
+      // koa-jwt 是负责对 token 进行验证的，
+      // 而 jsonwebtoken 是负责生成 token 的，所以接下来看我们如何进行 token 的生成
       const token = jwt.sign(
         {
           data,
         },
         JWT_SECRET,
-        { expiresIn: '1h' }
+        { expiresIn: EXPIRES_IN }
       )
 
       console.log('token', token)
