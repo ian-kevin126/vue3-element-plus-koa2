@@ -2,7 +2,7 @@
  * api集中管理
  */
 
-import request from './../utils/request'
+import request from '@/utils/request'
 export default {
   login(params) {
     return request({
@@ -16,7 +16,7 @@ export default {
       url: '/leave/count',
       method: 'get',
       data: {},
-      mock: false,
+      mock: true,
     })
   },
   getMenuList(params) {
@@ -24,7 +24,7 @@ export default {
       url: '/menu/list',
       method: 'get',
       data: params,
-      mock: false,
+      mock: true,
     })
   },
   getPermissionList() {
@@ -32,7 +32,7 @@ export default {
       url: '/users/getPermissionList',
       method: 'get',
       data: {},
-      mock: false,
+      mock: true,
     })
   },
   getUserList(params) {

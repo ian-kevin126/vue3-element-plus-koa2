@@ -13,14 +13,15 @@
         <i :class="menu.icon"></i>
         <span>{{ menu.menuName }}</span>
       </template>
+      <!-- 递归调用，渲染子菜单 -->
       <tree-menu :userMenu="menu.children" />
     </el-submenu>
     <el-menu-item
       v-else-if="menu.menuType == 1"
       :index="menu.path"
       :key="menu.path"
-      >{{ menu.menuName }}</el-menu-item
-    >
+      >{{ menu.menuName }}
+    </el-menu-item>
   </template>
 </template>
 <script>

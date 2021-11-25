@@ -4,9 +4,9 @@ const routes = [
   {
     name: 'home',
     path: '/',
-    component: () => import('../components/Home.vue'),
+    component: () => import('@/components/Home.vue'),
     redirect: '/welcome',
-    // meta可以配置一些跳转过程中更改页面标题，角色权限等
+    // meta可以配置一些跳转过程中更改页面标题、角色权限、面包屑等
     meta: {
       title: '首页',
     },
@@ -17,7 +17,7 @@ const routes = [
         meta: {
           title: '欢迎页',
         },
-        component: () => import('./../views/Welcome.vue'),
+        component: () => import('@/views/Welcome.vue'),
       },
     ],
   },
@@ -27,7 +27,7 @@ const routes = [
     meta: {
       title: '登录',
     },
-    component: () => import('./../views/Login.vue'),
+    component: () => import('@/views/Login.vue'),
   },
 ]
 

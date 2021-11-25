@@ -1,9 +1,7 @@
 import { createApp } from 'vue'
-// import { ElIcon } from 'element-plus'
 import ElementPlus from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 import App from './App.vue'
-import router from './router'
 import request from './utils/request'
 import storage from './utils/storage'
 import api from './api'
@@ -24,7 +22,6 @@ const app = createApp(App)
 // console.log('环境变量', import.meta.env)
 // 全局引入element-plus
 // app.use(ElementPlus)
-// app.use(ElIcon)
 app.config.globalProperties.$request = request
 app.config.globalProperties.$api = api
 app.config.globalProperties.$storage = storage
