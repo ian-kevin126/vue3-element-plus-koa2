@@ -2,8 +2,10 @@
   <div class="welcome">
     <div class="content">
       <div class="sub-title">欢迎体验</div>
-      <div class="title">SIWOOOO用后台</div>
-      <div class="desc">Vue3.0+ElementPlus+Node+Mongo打造通用后台管理系统</div>
+      <div class="title">SIWOOOO通用后台管理系统</div>
+      <div class="desc">
+        - Vue3.0+ElementPlus+Node+Mongo打造通用后台管理系统
+      </div>
     </div>
     <div class="img"></div>
   </div>
@@ -11,8 +13,8 @@
 
 <script>
 export default {
-  name: 'welcome',
-}
+  name: "welcome",
+};
 </script>
 
 <style lang="scss">
@@ -21,6 +23,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
+  background-color: #fff;
   .content {
     position: relative;
     bottom: 40px;
@@ -42,7 +45,7 @@ export default {
   }
   .img {
     margin-left: 105px;
-    background-image: url('./../assets/images/welcome.png');
+    background-image: url("./../assets/images/welcome.png");
     width: 371px;
     height: 438px;
   }

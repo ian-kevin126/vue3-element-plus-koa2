@@ -79,7 +79,8 @@ function request(options) {
   let isMock = config.mock
 
   // api/index.js 中的局部mock优先级最高，如果mock为true，那就是mock数据，
-  // 为false的时候，再去看全局的config/index.js里面的mock是否为true
+  // 为false的时候，再去看全局的config/index.js里面的mock是否为true，这样我们就可以渐进式地联调接口
+  // 我们通常将config里的全局mock开关设置为true，与后端联调完的接口就可以将api中的mock属性设置为false，未联调的设置为true，这样就可以提升一定的开发效率。
   if (typeof options.mock != 'undefined') {
     isMock = options.mock
   }
