@@ -40,12 +40,12 @@
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button @click="handleEdit(scope.row)" size="mini"
-              >编辑</el-button
-            >
-            <el-button type="danger" size="mini" @click="handleDel(scope.row)"
-              >删除</el-button
-            >
+            <el-button @click="handleEdit(scope.row)" size="mini">
+              编辑
+            </el-button>
+            <el-button type="danger" size="mini" @click="handleDel(scope.row)">
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -78,7 +78,7 @@
             :disabled="action == 'edit'"
             placeholder="请输入用户邮箱"
           >
-            <template #append>@imooc.com</template>
+            <template #append>@163.com</template>
           </el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="mobile">
@@ -134,9 +134,9 @@ import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue'
 import utils from './../utils/utils'
 export default {
   name: 'user',
-  // setup相当于一个入口函数，所有的Composition API都写在这里面，然后通过return去给组件调用
+  // setup相当于一个入口函数，所有的 Composition API 都写在这里面，然后通过 return 去给组件调用。
   setup() {
-    //   获取Composition API 上下文对象
+    // 获取 Composition API 上下文对象
     const { ctx } = getCurrentInstance()
     // 初始化用户表单对象
     const user = reactive({
@@ -242,19 +242,25 @@ export default {
         },
       },
     ])
+
     // 初始化接口调用
     onMounted(() => {
       getUserList()
-      getDeptList()
-      getRoleAllList()
+      // getDeptList()
+      // getRoleAllList()
     })
+
     // 获取用户列表
     const getUserList = async () => {
       let params = { ...user, ...pager }
+      console.log('1111', params)
       try {
-        const { list, page } = await ctx.$api.getUserList(params)
-        userList.value = list
-        pager.total = page.total
+        console.log('查询用户列表22')
+        const res = await ctx.$api.getUserList(params)
+        console.log('查询用户列表11')
+        console.log('userList', res)
+        userList.value = res
+        // pager.total = page.total
       } catch (error) {}
     }
     //  查询事件，获取用户列表
@@ -309,16 +315,16 @@ export default {
       showModal.value = true
     }
 
-    const getDeptList = async () => {
-      let list = await ctx.$api.getDeptList()
-      deptList.value = list
-    }
+    // const getDeptList = async () => {
+    //   let list = await ctx.$api.getDeptList()
+    //   deptList.value = list
+    // }
 
     // 角色列表查询
-    const getRoleAllList = async () => {
-      let list = await ctx.$api.getRoleAllList()
-      roleList.value = list
-    }
+    // const getRoleAllList = async () => {
+    //   let list = await ctx.$api.getRoleAllList()
+    //   roleList.value = list
+    // }
     // 用户弹窗关闭
     const handleClose = () => {
       showModal.value = false
@@ -367,8 +373,8 @@ export default {
       handlePatchDel,
       handleSelectionChange,
       handleCreate,
-      getRoleAllList,
-      getDeptList,
+      // getRoleAllList,
+      // getDeptList,
       handleClose,
       handleSubmit,
       handleEdit,
