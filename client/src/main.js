@@ -1,29 +1,32 @@
 import { createApp } from 'vue'
-import ElementPlus from 'element-plus'
-import 'element-plus/lib/theme-chalk/index.css'
 import App from './App.vue'
 import router from './router'
+import ElementPlus from 'element-plus'
+import 'element-plus/lib/theme-chalk/index.css'
 import request from './utils/request'
 import storage from './utils/storage'
 import api from './api'
 import store from './store'
 
+console.log('环境变量=>', import.meta.env)
 const app = createApp(App)
-// 分环境处理
-// Vue3+vite控制台不显示devtools的解决办法：https://segmentfault.com/a/1190000038377431
-// console.log(process.env.NODE_ENV)
-// if (process.env.NODE_ENV === 'dev') {
-//   if ('__VUE_DEVTOOLS_GLOBAL_HOOK__' in window) {
-//     // 这里__VUE_DEVTOOLS_GLOBAL_HOOK__.Vue赋值一个createApp实例
-//     window.__VUE_DEVTOOLS_GLOBAL_HOOK__.Vue = app
-//   }
-//   // app.config.devtools = true
-// }
 
-// console.log('环境变量', import.meta.env)
-// 全局引入element-plus
-// app.use(ElementPlus)
+app.directive('has', {
+  beforeMount: function (el, binding) {
+    let actionList = storage.getItem('actionList')
+    let value = binding.value
+    let hasPermission = actionList && actionList.includes(value)
+    if (!hasPermission) {
+      el.style = 'display:none'
+      setTimeout(() => {
+        el.parentNode.removeChild(el)
+      }, 0)
+    }
+  },
+})
+
 app.config.globalProperties.$request = request
 app.config.globalProperties.$api = api
 app.config.globalProperties.$storage = storage
+
 app.use(router).use(store).use(ElementPlus, { size: 'small' }).mount('#app')

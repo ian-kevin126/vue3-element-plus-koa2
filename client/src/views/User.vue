@@ -40,12 +40,12 @@
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button @click="handleEdit(scope.row)" size="mini">
-              编辑
-            </el-button>
-            <el-button type="danger" size="mini" @click="handleDel(scope.row)">
-              删除
-            </el-button>
+            <el-button @click="handleEdit(scope.row)" size="mini"
+              >编辑</el-button
+            >
+            <el-button type="danger" size="mini" @click="handleDel(scope.row)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -78,7 +78,7 @@
             :disabled="action == 'edit'"
             placeholder="请输入用户邮箱"
           >
-            <template #append>@163.com</template>
+            <template #append>@imooc.com</template>
           </el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="mobile">
@@ -134,10 +134,9 @@ import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue'
 import utils from './../utils/utils'
 export default {
   name: 'user',
-  // setup相当于一个入口函数，所有的 Composition API 都写在这里面，然后通过 return 去给组件调用。
   setup() {
     // 获取 Composition API 上下文对象
-    const { ctx } = getCurrentInstance()
+    const { proxy } = getCurrentInstance()
     // 初始化用户表单对象
     const user = reactive({
       state: 1,
@@ -242,62 +241,61 @@ export default {
         },
       },
     ])
-
     // 初始化接口调用
     onMounted(() => {
       getUserList()
-      // getDeptList()
-      // getRoleAllList()
+      getDeptList()
+      getRoleAllList()
     })
-
     // 获取用户列表
     const getUserList = async () => {
       let params = { ...user, ...pager }
-      console.log('1111', params)
       try {
-        console.log('查询用户列表22')
-        const res = await ctx.$api.getUserList(params)
-        console.log('查询用户列表11')
-        console.log('userList', res)
-        userList.value = res
-        // pager.total = page.total
+        const { list, page } = await proxy.$api.getUserList(params)
+        userList.value = list
+        pager.total = page.total
       } catch (error) {}
     }
+
     //  查询事件，获取用户列表
     const handleQuery = () => {
       getUserList()
     }
+
     // 重置查询表单
     const handleReset = (form) => {
-      ctx.$refs[form].resetFields()
+      proxy.$refs[form].resetFields()
     }
+
     // 分页事件处理
     const handleCurrentChange = (current) => {
       pager.pageNum = current
       getUserList()
     }
+
     // 用户单个删除
     const handleDel = async (row) => {
-      await ctx.$api.userDel({
+      await proxy.$api.userDel({
         userIds: [row.userId], //可单个删除，也可批量删除
       })
-      ctx.$message.success('删除成功')
+      proxy.$message.success('删除成功')
       getUserList()
     }
+
     // 批量删除
     const handlePatchDel = async () => {
       if (checkedUserIds.value.length == 0) {
-        ctx.$message.error('请选择要删除的用户')
+        proxy.$message.error('请选择要删除的用户')
         return
       }
-      const res = await ctx.$api.userDel({
+      const res = await proxy.$api.userDel({
         userIds: checkedUserIds.value, //可单个删除，也可批量删除
       })
       if (res.nModified > 0) {
-        ctx.$message.success('删除成功')
+        proxy.$message.success('删除成功')
         getUserList()
       } else {
-        ctx.$message.success('修改失败')
+        proxy.$message.success('修改失败')
       }
     }
 
@@ -309,50 +307,55 @@ export default {
       })
       checkedUserIds.value = arr
     }
+
     // 用户新增
     const handleCreate = () => {
       action.value = 'add'
       showModal.value = true
     }
 
-    // const getDeptList = async () => {
-    //   let list = await ctx.$api.getDeptList()
-    //   deptList.value = list
-    // }
+    const getDeptList = async () => {
+      let list = await proxy.$api.getDeptList()
+      deptList.value = list
+    }
 
     // 角色列表查询
-    // const getRoleAllList = async () => {
-    //   let list = await ctx.$api.getRoleAllList()
-    //   roleList.value = list
-    // }
+    const getRoleAllList = async () => {
+      let list = await proxy.$api.getRoleAllList()
+      roleList.value = list
+    }
+
     // 用户弹窗关闭
     const handleClose = () => {
       showModal.value = false
       handleReset('dialogForm')
     }
+
     // 用户提交
     const handleSubmit = () => {
-      ctx.$refs.dialogForm.validate(async (valid) => {
+      proxy.$refs.dialogForm.validate(async (valid) => {
         if (valid) {
           let params = toRaw(userForm)
           params.userEmail += '@imooc.com'
           params.action = action.value
-          let res = await ctx.$api.userSubmit(params)
+          let res = await proxy.$api.userSubmit(params)
           showModal.value = false
-          ctx.$message.success('用户创建成功')
+          proxy.$message.success('用户创建成功')
           handleReset('dialogForm')
           getUserList()
         }
       })
     }
+
     // 用户编辑
     const handleEdit = (row) => {
       action.value = 'edit'
       showModal.value = true
-      ctx.$nextTick(() => {
+      proxy.$nextTick(() => {
         Object.assign(userForm, row)
       })
     }
+
     return {
       user,
       userList,
@@ -373,8 +376,8 @@ export default {
       handlePatchDel,
       handleSelectionChange,
       handleCreate,
-      // getRoleAllList,
-      // getDeptList,
+      getRoleAllList,
+      getDeptList,
       handleClose,
       handleSubmit,
       handleEdit,

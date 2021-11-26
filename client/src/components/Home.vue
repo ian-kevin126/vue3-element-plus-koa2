@@ -111,7 +111,7 @@ export default {
         const res = await this.$api.getMenuList()
         this.$store.commit('saveMenuList', res)
         // this.$store.commit('saveActionList', actionList)
-        console.log('res', res)
+        // console.log('res', res)
         this.userMenu = res
       } catch (error) {
         console.error(error)

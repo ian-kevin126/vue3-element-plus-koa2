@@ -14,7 +14,6 @@ export default {
   name: 'BreadCrumb',
   computed: {
     breadList() {
-      console.log('route', this.$route)
       return this.$route.matched
     },
   },

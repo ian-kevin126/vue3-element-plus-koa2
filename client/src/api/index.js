@@ -41,7 +41,7 @@ export default {
       url: '/users/list',
       method: 'get',
       data: params,
-      mock: true
+      mock: true,
     })
   },
   getAllUserList() {
@@ -57,6 +57,7 @@ export default {
       url: '/users/delete',
       method: 'post',
       data: params,
+      mock: true,
     })
   },
   getRoleAllList() {
@@ -64,7 +65,7 @@ export default {
       url: '/roles/allList',
       method: 'get',
       data: {},
-      mock: false,
+      mock: true,
     })
   },
   getRoleList(params) {
@@ -80,7 +81,7 @@ export default {
       url: '/dept/list',
       method: 'get',
       data: params,
-      mock: false,
+      mock: true,
     })
   },
   deptOperate(params) {
@@ -96,7 +97,7 @@ export default {
       url: '/users/operate',
       method: 'post',
       data: params,
-      mock: false,
+      mock: true,
     })
   },
   menuSubmit(params) {
