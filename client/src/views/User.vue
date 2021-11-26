@@ -331,12 +331,12 @@ export default {
       handleReset('dialogForm')
     }
 
-    // 用户提交
+    // 提交新增用户
     const handleSubmit = () => {
       proxy.$refs.dialogForm.validate(async (valid) => {
         if (valid) {
           let params = toRaw(userForm)
-          params.userEmail += '@imooc.com'
+          params.userEmail += '@163.com'
           params.action = action.value
           let res = await proxy.$api.userSubmit(params)
           showModal.value = false
