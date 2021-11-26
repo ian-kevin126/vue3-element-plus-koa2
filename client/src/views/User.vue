@@ -130,6 +130,8 @@
   </div>
 </template>
 <script>
+// toRow：把响应式对象转化为普通对象
+// getCurrentInstance 支持访问内部组件实例
 import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue'
 import utils from './../utils/utils'
 export default {
@@ -139,7 +141,7 @@ export default {
     const { proxy } = getCurrentInstance()
     // 初始化用户表单对象
     const user = reactive({
-      state: 1,
+      state: 0,
     })
     // 初始化用户列表数据
     const userList = ref([])
@@ -335,6 +337,8 @@ export default {
     const handleSubmit = () => {
       proxy.$refs.dialogForm.validate(async (valid) => {
         if (valid) {
+          // toRow：把响应式对象转化为普通对象，否则后续处理入参的时候会影响页面的数据展示，
+          // 因为 userForm 被定义为响应式数据了
           let params = toRaw(userForm)
           params.userEmail += '@163.com'
           params.action = action.value
@@ -351,6 +355,7 @@ export default {
     const handleEdit = (row) => {
       action.value = 'edit'
       showModal.value = true
+      // $nextTick：等待DOM渲染完成之后再赋值给变量，这样在执行重置表单数据的时候才能生效
       proxy.$nextTick(() => {
         Object.assign(userForm, row)
       })

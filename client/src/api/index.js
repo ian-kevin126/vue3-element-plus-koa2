@@ -41,7 +41,7 @@ export default {
       url: '/users/list',
       method: 'get',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   getAllUserList() {
@@ -97,7 +97,7 @@ export default {
       url: '/users/operate',
       method: 'post',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   menuSubmit(params) {
