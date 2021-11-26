@@ -73,7 +73,7 @@ export default {
       url: '/roles/list',
       method: 'get',
       data: params,
-      mock: false,
+      mock: true,
     })
   },
   getDeptList(params) {

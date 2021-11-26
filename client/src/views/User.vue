@@ -78,7 +78,7 @@
             :disabled="action == 'edit'"
             placeholder="请输入用户邮箱"
           >
-            <template #append>@imooc.com</template>
+            <template #append>@163.com</template>
           </el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="mobile">
