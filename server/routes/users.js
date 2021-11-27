@@ -62,14 +62,13 @@ router.get('/list', async (ctx) => {
   const { userId, userName, state } = ctx.request.query
   // 通过utils里封装的分页参数方法，生成分页参数
   const { page, skipIndex } = util.pager(ctx.request.query)
-
-  const params = {}
+  let params = {}
   if (userId) params.userId = userId
   if (userName) params.userName = userName
   // state为0的时候表示所有，就不需要传参了
-  if (state && state !== 0) params.state = state
-
+  if (state && state != '0') params.state = state
   try {
+    // 根据条件查询所有用户列表
     // find第二个参数：过滤掉一些不需要返回的字段，比如_id和密码
     const query = User.find(params, { _id: 0, userPwd: 0 })
     // 分页处理
@@ -85,7 +84,7 @@ router.get('/list', async (ctx) => {
       list,
     })
   } catch (error) {
-    ctx.body = util.fail(`查询异常: ${error.stack}`)
+    ctx.body = util.fail(`查询异常:${error.stack}`)
   }
 })
 
@@ -156,6 +155,7 @@ router.post('/operate', async (ctx) => {
       )
     } else {
       // 校验通过后，先去id自增表里面查询一个叫userId的id，然后将其+1，实现自增
+      // 这里有个注意的地方是，应将id自增放到所有校验通过之后的这个位置，避免很多不必要的id自增
       const doc = await Counter.findOneAndUpdate(
         { _id: 'userId' },
         // 通过$inc实现自增 + 1
@@ -169,6 +169,7 @@ router.post('/operate', async (ctx) => {
         const user = new User({
           userId: doc.sequence_value,
           userName,
+          // 对用户密码进行加密
           userPwd: md5('123456'),
           userEmail,
           role: 1, // 创建的时候，默认是普通用户
