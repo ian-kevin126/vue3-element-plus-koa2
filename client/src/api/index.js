@@ -60,21 +60,22 @@ export default {
       mock: false,
     })
   },
-
+  // 获取部门列表
   getDeptList(params) {
     return request({
       url: '/dept/list',
       method: 'get',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
+  // 创建、编辑、删除部门
   deptOperate(params) {
     return request({
       url: '/dept/operate',
       method: 'post',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   userSubmit(params) {
