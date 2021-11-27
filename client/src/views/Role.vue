@@ -15,7 +15,7 @@
       <div class="action">
         <el-button type="primary" @click="handleAdd">创建</el-button>
       </div>
-      <el-table :data="roleList">
+      <el-table :data="roleList" v-loading="loading">
         <el-table-column
           v-for="item in columns"
           :key="item.prop"
@@ -180,6 +180,7 @@ export default {
       curRoleName: '',
       menuList: [],
       actionMap: {}, // 菜单映射表
+      loading: true,
     }
   },
   mounted() {
@@ -195,6 +196,7 @@ export default {
           ...this.pager,
         })
         this.roleList = list
+        this.loading = false
         this.pager.total = page.total
       } catch (e) {
         throw new Error(e)

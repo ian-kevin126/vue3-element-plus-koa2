@@ -51,6 +51,7 @@ router.post('/operate', async (ctx) => {
       if (_id) {
         let params = { roleName, remark }
         params.update = new Date()
+        // findByIdAndUpdate：通过id查询效率更高
         res = await Role.findByIdAndUpdate(_id, params)
         info = '编辑成功'
       } else {
@@ -75,6 +76,15 @@ router.post('/operate', async (ctx) => {
 // 权限设置
 router.post('/update/permission', async (ctx) => {
   const { _id, permissionList } = ctx.request.body
+
+  /**
+ * permissionList: {
+     checkedKeys,
+     halfCheckedKeys: parentKeys.concat(halfKeys),
+   },
+ * 
+ */
+
   try {
     let params = { permissionList, update: new Date() }
     let res = await Role.findByIdAndUpdate(_id, params)

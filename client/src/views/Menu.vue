@@ -25,6 +25,7 @@
         :data="menuList"
         row-key="_id"
         :tree-props="{ children: 'children' }"
+        v-loading="loading"
       >
         <el-table-column
           v-for="item in columns"
@@ -217,6 +218,7 @@ export default {
           },
         ],
       },
+      loading: true,
     }
   },
 
@@ -230,6 +232,7 @@ export default {
       try {
         let list = await this.$api.getMenuList(this.queryForm)
         this.menuList = list
+        this.loading = false
       } catch (e) {
         throw new Error(e)
       }

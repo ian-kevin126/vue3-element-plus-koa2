@@ -27,7 +27,11 @@
         <el-button type="primary" @click="handleCreate">新增</el-button>
         <el-button type="danger" @click="handlePatchDel">批量删除</el-button>
       </div>
-      <el-table :data="userList" @selection-change="handleSelectionChange">
+      <el-table
+        :data="userList"
+        @selection-change="handleSelectionChange"
+        :v-loading="loading"
+      >
         <el-table-column type="selection" width="55" />
         <el-table-column
           v-for="item in columns"
@@ -181,8 +185,8 @@ setup() {
 以上就是vue3 toRaw函数和markRaw函数的基本使用！
 
 链接：https://www.jianshu.com/p/c0b103082889
- * 
- * 
+ *
+ *
  */
 
 // getCurrentInstance 支持访问内部组件实例
@@ -199,6 +203,9 @@ export default {
     })
     // 初始化用户列表数据
     const userList = ref([])
+
+    // 表格loading
+    const loading = ref(true)
     // 初始化分页对象
     const pager = reactive({
       pageNum: 1,
@@ -310,6 +317,7 @@ export default {
         const { list, page } = await proxy.$api.getUserList(params)
         userList.value = list
         pager.total = page.total
+        loading.value = false
       } catch (error) {}
     }
 
