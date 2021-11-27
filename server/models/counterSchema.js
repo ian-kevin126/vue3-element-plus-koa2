@@ -3,8 +3,8 @@
  */
 const mongoose = require('mongoose')
 const userSchema = mongoose.Schema({
-    _id: String,
-    sequence_value: Number
+  _id: String,
+  sequence_value: Number,
 })
 
-module.exports = mongoose.model("counter", userSchema, "counters")
+module.exports = mongoose.model('counter', userSchema, 'counters')

@@ -131,6 +131,60 @@
 </template>
 <script>
 // toRow：把响应式对象转化为普通对象
+/**
+ * 在setup函数中，我们通过ref和reactive函数创建响应式数据，其特点是，每次修改数据都会更新UI界面，这样的问题是非常消耗性能
+所以，如果我们有些时候，有些操作可以不需要每次修改数据都去更新UI界面，那么我们可以通过vue3提供的toRaw方法来获取该数据被Proxy包装前的原始数据，然后通过对原始数据进行修改，进而可以修改对应的代理对象内部数据。这是通过原始数据修改改变的，并不会触发 UI界面更新。
+import { reactive, toRaw } from "vue";
+export default {
+  setup() {
+    const obj1= {name:'alice'};
+    const user = reactive(obj1);
+    const obj2 = toRaw(user);
+    console.log(obj1 === obj2);//true
+    function change() {
+      obj2.name = 'Frank';
+    }
+    return { user, change};
+  },
+};
+上面例子中，通过包装后的响应式对象user来修改，界面会立即更新。但是如果通过修改原始数据obj2 来修改数据，界面是不会跟新的。另外我们可以看见obj2===obj1，由此证明：toRow就是用于获取一个Proxy对象的原始数据
+
+以上是获取reactive的原始数据（创建时响应式数据时传入的原始数据），我们再来看下如何获取ref的原始数据
+我们知道ref的本质是reactive，即ref(obj)相当于reactive({value : obj})
+所以如果想通过toRaw方法获取ref类型的原始数据，就必须明确告诉toRaw，需要获取的是.value的值。因为.value中保存的才是当初创建时传入的原始数据
+
+import { ref, toRaw } from "vue";
+export default {
+  setup() {
+    const obj1= {name:'alice'};
+    const user = ref(obj1);
+    const obj2 = toRaw(user.value);
+    console.log(obj1,user,obj2);
+    return { user };
+  },
+};
+
+有的情况下，我们希望某个数据在以后的操作中永远都不会被追踪，vue3提供了一个方法：markRaw
+
+setup() {
+   const obj= {name:'alice',age:18};
+   obj= markRaw(obj);
+   const user= reactive(obj);
+   function change(){
+    user.age=19
+   }
+   return { user , change};
+}
+
+上述代码中，obj被markRaw标记后，当后面将obj变成proxy对象时，发现调用change方法改变数据时，界面并不会再跟新了！
+
+以上就是vue3 toRaw函数和markRaw函数的基本使用！
+
+链接：https://www.jianshu.com/p/c0b103082889
+ * 
+ * 
+ */
+
 // getCurrentInstance 支持访问内部组件实例
 import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue'
 import utils from './../utils/utils'

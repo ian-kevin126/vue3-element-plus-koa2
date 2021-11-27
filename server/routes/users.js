@@ -104,6 +104,7 @@ router.post('/delete', async (ctx) => {
   // 待删除的用户Id数组
   const { userIds } = ctx.request.body
   // User.updateMany({ $or: [{ userId: 10001 }, { userId: 10002 }] })
+  // 将用户的 state 改为2就是软删除，并不是真正从数据库中删除
   const res = await User.updateMany({ userId: { $in: userIds } }, { state: 2 })
   if (res.nModified) {
     ctx.body = util.success(res, `共删除成功${res.nModified}条`)
@@ -111,6 +112,7 @@ router.post('/delete', async (ctx) => {
   }
   ctx.body = util.fail('删除失败')
 })
+
 // 用户新增/编辑
 router.post('/operate', async (ctx) => {
   const {
@@ -125,10 +127,25 @@ router.post('/operate', async (ctx) => {
     action,
   } = ctx.request.body
   if (action == 'add') {
+    // 新增功能，需要注意的是 MongoDB不同于MySQL可以自己创建自增长的id，在MongoDB里面，我们需要
+    // 手动去维护一个自增长的id的表，首先要在数据库自己先创建一个表 counter，作为自增id表
+    /**
+     * {
+          "_id" : "userId",
+          "sequence_value" : 1000001
+      }
+     * 下次，就会先去这个表查询对应的id，然后+1，作为新增用户的id，当然我们也可以每次在新增的时候，
+      在User表里面去查找id最后一位，然后+1，作为新用户的id，这样显然是非常耗费性能的。相比之下，我们
+      维护一个单表counters，显然是性能更好的。
+     */
+
+    // 参数校验
     if (!userName || !userEmail || !deptId) {
       ctx.body = util.fail('参数错误', util.CODE.PARAM_ERROR)
       return
     }
+
+    // 去重处理，如果输入的用户名和邮箱已经被用过了，那就返回重名提醒。
     const res = await User.findOne(
       { $or: [{ userName }, { userEmail }] },
       '_id userName userEmail'
@@ -138,19 +155,23 @@ router.post('/operate', async (ctx) => {
         `系统监测到有重复的用户，信息如下：${res.userName} - ${res.userEmail}`
       )
     } else {
+      // 校验通过后，先去id自增表里面查询一个叫userId的id，然后将其+1，实现自增
       const doc = await Counter.findOneAndUpdate(
         { _id: 'userId' },
+        // 通过$inc实现自增 + 1
         { $inc: { sequence_value: 1 } },
+        // 设置为new，返回一个新的document
         { new: true }
       )
-      console.log('doc', doc)
+
       try {
+        // 可以通过 User.create() 或者 new User 方式去创建
         const user = new User({
           userId: doc.sequence_value,
           userName,
           userPwd: md5('123456'),
           userEmail,
-          role: 1, //默认普通用户
+          role: 1, // 创建的时候，默认是普通用户
           roleList,
           job,
           state,
@@ -164,6 +185,7 @@ router.post('/operate', async (ctx) => {
       }
     }
   } else {
+    // 编辑的时候部门不能为空
     if (!deptId) {
       ctx.body = util.fail('部门不能为空', util.CODE.PARAM_ERROR)
       return
@@ -179,6 +201,7 @@ router.post('/operate', async (ctx) => {
     }
   }
 })
+
 // 获取用户对应的权限菜单
 router.get('/getPermissionList', async (ctx) => {
   let authorization = ctx.request.headers.authorization
