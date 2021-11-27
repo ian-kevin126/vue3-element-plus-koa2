@@ -41,7 +41,7 @@ export default {
       url: '/users/list',
       method: 'get',
       data: params,
-      mock: false,
+      mock: true,
     })
   },
   getAllUserList() {
@@ -49,7 +49,7 @@ export default {
       url: '/users/all/list',
       method: 'get',
       data: {},
-      mock: false,
+      mock: true,
     })
   },
   userDel(params) {
@@ -57,7 +57,7 @@ export default {
       url: '/users/delete',
       method: 'post',
       data: params,
-      mock: false,
+      mock: true,
     })
   },
   getRoleAllList() {
@@ -89,7 +89,7 @@ export default {
       url: '/dept/operate',
       method: 'post',
       data: params,
-      mock: false,
+      mock: true,
     })
   },
   userSubmit(params) {
@@ -97,7 +97,7 @@ export default {
       url: '/users/operate',
       method: 'post',
       data: params,
-      mock: false,
+      mock: true,
     })
   },
   menuSubmit(params) {
@@ -105,7 +105,7 @@ export default {
       url: '/menu/operate',
       method: 'post',
       data: params,
-      mock: false,
+      mock: true,
     })
   },
   roleOperate(params) {
@@ -113,7 +113,7 @@ export default {
       url: '/roles/operate',
       method: 'post',
       data: params,
-      mock: false,
+      mock: true,
     })
   },
   updatePermission(params) {
@@ -121,7 +121,7 @@ export default {
       url: '/roles/update/permission',
       method: 'post',
       data: params,
-      mock: false,
+      mock: true,
     })
   },
   getApplyList(params) {
@@ -129,7 +129,7 @@ export default {
       url: '/leave/list',
       method: 'get',
       data: params,
-      mock: false,
+      mock: true,
     })
   },
   leaveOperate(params) {
@@ -137,7 +137,7 @@ export default {
       url: '/leave/operate',
       method: 'post',
       data: params,
-      mock: false,
+      mock: true,
     })
   },
   leaveApprove(params) {
@@ -145,7 +145,7 @@ export default {
       url: '/leave/approve',
       method: 'post',
       data: params,
-      mock: false,
+      mock: true,
     })
   },
 }
