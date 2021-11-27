@@ -4,7 +4,9 @@ const Dept = require('./../models/deptSchema')
 
 router.prefix('/dept')
 
-// 部门树形列表
+/**
+ * 部门树形列表
+ */
 router.get('/list', async (ctx) => {
   let { deptName } = ctx.request.query
   let params = {}
@@ -18,7 +20,13 @@ router.get('/list', async (ctx) => {
   }
 })
 
-// 递归拼接树形列表
+/**
+ * 递归拼接树形列表
+ * @param {*} rootList
+ * @param {*} id
+ * @param {*} list
+ * @returns
+ */
 function getTreeDept(rootList, id, list) {
   for (let i = 0; i < rootList.length; i++) {
     let item = rootList[i]
@@ -36,7 +44,9 @@ function getTreeDept(rootList, id, list) {
   return list
 }
 
-// 部门操作：创建、编辑、删除
+/**
+ * 部门操作：创建、编辑、删除
+ */
 router.post('/operate', async (ctx) => {
   const { _id, action, ...params } = ctx.request.body
   let res, info
@@ -49,7 +59,9 @@ router.post('/operate', async (ctx) => {
       await Dept.findByIdAndUpdate(_id, params)
       info = '编辑成功'
     } else if (action == 'delete') {
+      // 先删除当前节点
       await Dept.findByIdAndRemove(_id)
+      // 再删除子节点
       await Dept.deleteMany({ parentId: { $all: [_id] } })
       info = '删除成功'
     }

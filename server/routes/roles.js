@@ -7,7 +7,9 @@ const util = require('../utils/util')
 
 router.prefix('/roles')
 
-// 查询所有角色列表
+/**
+ * 查询所有角色列表
+ */
 router.get('/allList', async (ctx) => {
   try {
     const list = await Role.find({}, '_id roleName')
@@ -17,7 +19,9 @@ router.get('/allList', async (ctx) => {
   }
 })
 
-// 按页获取角色列表
+/**
+ * 按页获取角色列表
+ */
 router.get('/list', async (ctx) => {
   const { roleName } = ctx.request.query
   const { page, skipIndex } = util.pager(ctx.request.query)
@@ -39,7 +43,9 @@ router.get('/list', async (ctx) => {
   }
 })
 
-// 角色操作：创建、编辑和删除
+/**
+ * 角色操作：创建、编辑和删除
+ */
 router.post('/operate', async (ctx) => {
   const { _id, roleName, remark, action } = ctx.request.body
   let res, info
@@ -73,7 +79,9 @@ router.post('/operate', async (ctx) => {
   }
 })
 
-// 权限设置
+/**
+ * 权限设置
+ */
 router.post('/update/permission', async (ctx) => {
   const { _id, permissionList } = ctx.request.body
 

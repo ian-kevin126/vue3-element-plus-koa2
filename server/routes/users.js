@@ -14,7 +14,9 @@ const md5 = require('md5')
 
 router.prefix('/users')
 
-// 用户登录
+/**
+ * 用户登录
+ */
 router.post('/login', async (ctx) => {
   try {
     const { userName, userPwd } = ctx.request.body
@@ -57,7 +59,9 @@ router.post('/login', async (ctx) => {
   }
 })
 
-// 用户列表
+/**
+ * 获取用户列表
+ */
 router.get('/list', async (ctx) => {
   const { userId, userName, state } = ctx.request.query
   // 通过utils里封装的分页参数方法，生成分页参数
@@ -88,7 +92,9 @@ router.get('/list', async (ctx) => {
   }
 })
 
-// 获取全量用户列表
+/**
+ * 获取全量用户列表
+ */
 router.get('/all/list', async (ctx) => {
   try {
     const list = await User.find({}, 'userId userName userEmail')
@@ -98,7 +104,9 @@ router.get('/all/list', async (ctx) => {
   }
 })
 
-// 用户删除/批量删除
+/**
+ * 用户删除/批量删除
+ */
 router.post('/delete', async (ctx) => {
   // 待删除的用户Id数组
   const { userIds } = ctx.request.body
@@ -112,7 +120,9 @@ router.post('/delete', async (ctx) => {
   ctx.body = util.fail('删除失败')
 })
 
-// 用户新增/编辑
+/**
+ * 用户新增/编辑
+ */
 router.post('/operate', async (ctx) => {
   const {
     userId,
@@ -203,7 +213,9 @@ router.post('/operate', async (ctx) => {
   }
 })
 
-// 获取用户对应的权限菜单
+/**
+ * 获取用户对应的权限菜单
+ */
 router.get('/getPermissionList', async (ctx) => {
   let authorization = ctx.request.headers.authorization
   let { data } = util.decoded(authorization)

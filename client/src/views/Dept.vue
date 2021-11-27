@@ -134,6 +134,7 @@ export default {
       },
       action: 'create',
       showModal: false,
+      // 默认给它设置一个null，这样在初始创建的时候就可以通过表单校验
       deptForm: {
         parentId: [null],
       },
@@ -182,6 +183,9 @@ export default {
     },
     handleReset(form) {
       this.$refs[form].resetFields()
+      if (form === 'queryForm') {
+        this.getDeptList()
+      }
     },
     handleOpen() {
       this.action = 'create'

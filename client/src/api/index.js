@@ -60,7 +60,11 @@ export default {
       mock: false,
     })
   },
-  // 获取部门列表
+  /**
+   * 获取部门列表
+   * @param {*} params
+   * @returns
+   */
   getDeptList(params) {
     return request({
       url: '/dept/list',
@@ -69,7 +73,11 @@ export default {
       mock: false,
     })
   },
-  // 创建、编辑、删除部门
+  /**
+   * 创建、编辑、删除部门
+   * @param {*} params
+   * @returns
+   */
   deptOperate(params) {
     return request({
       url: '/dept/operate',
@@ -94,7 +102,11 @@ export default {
       mock: false,
     })
   },
-  // 角色创建
+  /**
+   * 角色创建
+   * @param {*} params
+   * @returns
+   */
   roleOperate(params) {
     return request({
       url: '/roles/operate',
@@ -103,7 +115,10 @@ export default {
       mock: false,
     })
   },
-  // 查询所有角色列表
+  /**
+   * 查询所有角色列表
+   * @returns
+   */
   getRoleAllList() {
     return request({
       url: '/roles/allList',
@@ -112,7 +127,11 @@ export default {
       mock: false,
     })
   },
-  // 查询角色列表（带参数）
+  /**
+   * 查询角色列表（带参数）
+   * @param {*} params
+   * @returns
+   */
   getRoleList(params) {
     return request({
       url: '/roles/list',
@@ -121,7 +140,11 @@ export default {
       mock: false,
     })
   },
-  // 更新角色权限
+  /**
+   * 更新角色权限
+   * @param {*} params
+   * @returns
+   */
   updatePermission(params) {
     return request({
       url: '/roles/update/permission',

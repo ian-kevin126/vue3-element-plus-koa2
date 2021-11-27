@@ -4,7 +4,9 @@ const Menu = require('../models/menuSchema')
 
 router.prefix('/menu')
 
-// 菜单列表查询
+/**
+ * 菜单列表查询
+ */
 router.get('/list', async (ctx) => {
   const { menuName, menuState } = ctx.request.query
   const params = {}
@@ -17,7 +19,9 @@ router.get('/list', async (ctx) => {
   ctx.body = util.success(permissionList)
 })
 
-// 菜单编辑、删除、新增功能
+/**
+ * 菜单编辑、删除、新增功能
+ */
 router.post('/operate', async (ctx) => {
   const { _id, action, ...params } = ctx.request.body
   let res, info
