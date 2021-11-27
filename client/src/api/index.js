@@ -99,7 +99,7 @@ export default {
       url: '/roles/operate',
       method: 'post',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   // 查询所有角色列表
@@ -108,7 +108,7 @@ export default {
       url: '/roles/allList',
       method: 'get',
       data: {},
-      mock: true,
+      mock: false,
     })
   },
   // 查询角色列表（带参数）
@@ -117,7 +117,7 @@ export default {
       url: '/roles/list',
       method: 'get',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   // 更新角色权限
@@ -126,7 +126,7 @@ export default {
       url: '/roles/update/permission',
       method: 'post',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   getApplyList(params) {

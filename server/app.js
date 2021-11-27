@@ -14,6 +14,7 @@ const { JWT_SECRET } = require('./config')
 
 const users = require('./routes/users')
 const menus = require('./routes/menus')
+const roles = require('./routes/roles')
 
 // error handler
 onerror(app)
@@ -74,6 +75,7 @@ router.prefix('/api')
 // 加载二级路由
 router.use(users.routes(), users.allowedMethods())
 router.use(menus.routes(), menus.allowedMethods())
+router.use(roles.routes(), roles.allowedMethods())
 
 // 加载全局路由，注意这一步也不可以漏写
 app.use(router.routes(), router.allowedMethods())
