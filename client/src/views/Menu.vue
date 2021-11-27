@@ -238,6 +238,9 @@ export default {
     // 表单重置
     handleReset(form) {
       this.$refs[form].resetFields()
+      if (form === 'form') {
+        this.getMenuList()
+      }
     },
 
     // 新增菜单
