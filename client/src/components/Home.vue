@@ -4,7 +4,7 @@
       <!-- 系统LOGO -->
       <div class="logo">
         <img src="./../assets/logo.png" />
-        <span>Manager</span>
+        <span>Siwooo</span>
       </div>
       <!-- 导航菜单 -->
       <el-menu

@@ -60,22 +60,7 @@ export default {
       mock: false,
     })
   },
-  getRoleAllList() {
-    return request({
-      url: '/roles/allList',
-      method: 'get',
-      data: {},
-      mock: true,
-    })
-  },
-  getRoleList(params) {
-    return request({
-      url: '/roles/list',
-      method: 'get',
-      data: params,
-      mock: true,
-    })
-  },
+
   getDeptList(params) {
     return request({
       url: '/dept/list',
@@ -108,6 +93,7 @@ export default {
       mock: false,
     })
   },
+  // 角色创建
   roleOperate(params) {
     return request({
       url: '/roles/operate',
@@ -116,6 +102,25 @@ export default {
       mock: true,
     })
   },
+  // 查询所有角色列表
+  getRoleAllList() {
+    return request({
+      url: '/roles/allList',
+      method: 'get',
+      data: {},
+      mock: true,
+    })
+  },
+  // 查询角色列表（带参数）
+  getRoleList(params) {
+    return request({
+      url: '/roles/list',
+      method: 'get',
+      data: params,
+      mock: true,
+    })
+  },
+  // 更新角色权限
   updatePermission(params) {
     return request({
       url: '/roles/update/permission',
