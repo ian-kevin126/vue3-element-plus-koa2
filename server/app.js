@@ -7,11 +7,13 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const log4js = require('./utils/log4j')
 const router = require('koa-router')()
-const users = require('./routes/users')
 const util = require('./utils/util')
 const jwt = require('jsonwebtoken')
 const koajwt = require('koa-jwt')
 const { JWT_SECRET } = require('./config')
+
+const users = require('./routes/users')
+const menus = require('./routes/menus')
 
 // error handler
 onerror(app)
@@ -71,6 +73,7 @@ router.prefix('/api')
 
 // 加载二级路由
 router.use(users.routes(), users.allowedMethods())
+router.use(menus.routes(), menus.allowedMethods())
 
 // 加载全局路由，注意这一步也不可以漏写
 app.use(router.routes(), router.allowedMethods())

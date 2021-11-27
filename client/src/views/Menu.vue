@@ -56,7 +56,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <!-- 新建/编辑菜单 -->
+    <!-- 新建/编辑菜单弹框 -->
     <el-dialog title="用户新增" v-model="showModal">
       <el-form
         ref="dialogForm"
@@ -71,7 +71,7 @@
             :props="{ checkStrictly: true, value: '_id', label: 'menuName' }"
             clearable
           />
-          <span>不选，则直接创建一级菜单</span>
+          <span>&nbsp;&nbsp;&nbsp;不选，则直接创建一级菜单</span>
         </el-form-item>
         <el-form-item label="菜单类型" prop="menuType">
           <el-radio-group v-model="menuForm.menuType">
@@ -87,7 +87,7 @@
           prop="icon"
           v-show="menuForm.menuType == 1"
         >
-          <el-input v-model="menuForm.icon" placeholder="请输入岗位" />
+          <el-input v-model="menuForm.icon" placeholder="请输入菜单图标" />
         </el-form-item>
         <el-form-item
           label="路由地址"
@@ -244,6 +244,7 @@ export default {
     handleAdd(type, row) {
       this.showModal = true
       this.action = 'add'
+      // type 为2的时候是从表格的一行中去新增，此时parentId是确定的，需要处理一下。
       if (type == 2) {
         this.menuForm.parentId = [...row.parentId, row._id].filter(
           (item) => item
@@ -251,6 +252,7 @@ export default {
       }
     },
 
+    // 编辑菜单
     handleEdit(row) {
       this.showModal = true
       this.action = 'edit'
@@ -259,6 +261,7 @@ export default {
       })
     },
 
+    // 删除菜单
     async handleDel(_id) {
       await this.$api.menuSubmit({ _id, action: 'delete' })
       this.$message.success('删除成功')
