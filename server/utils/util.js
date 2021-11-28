@@ -3,6 +3,7 @@
  */
 const log4js = require('./log4j')
 const jwt = require('jsonwebtoken')
+const { JWT_SECRET } = require('../config')
 const CODE = {
   SUCCESS: 200,
   PARAM_ERROR: 10001, // 参数错误
@@ -49,7 +50,7 @@ module.exports = {
   decoded(authorization) {
     if (authorization) {
       let token = authorization.split(' ')[1]
-      return jwt.verify(token, 'imooc')
+      return jwt.verify(token, JWT_SECRET)
     }
     return ''
   },

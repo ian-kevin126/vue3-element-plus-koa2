@@ -52,6 +52,24 @@ export default {
       mock: false,
     })
   },
+  /**
+   * 创建用户
+   * @param {*} params
+   * @returns
+   */
+  userSubmit(params) {
+    return request({
+      url: '/users/operate',
+      method: 'post',
+      data: params,
+      mock: false,
+    })
+  },
+  /**
+   * 删除用户
+   * @param {*} params
+   * @returns
+   */
   userDel(params) {
     return request({
       url: '/users/delete',
@@ -84,14 +102,6 @@ export default {
       method: 'post',
       data: params,
       mock: false,
-    })
-  },
-  userSubmit(params) {
-    return request({
-      url: '/users/operate',
-      method: 'post',
-      data: params,
-      mock: true,
     })
   },
   menuSubmit(params) {

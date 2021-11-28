@@ -218,18 +218,29 @@ router.post('/operate', async (ctx) => {
  */
 router.get('/getPermissionList', async (ctx) => {
   let authorization = ctx.request.headers.authorization
+  // 解析token，获取权限数据
   let { data } = util.decoded(authorization)
+
+  // 通过角色（role）和角色权限列表（roleList）去获取菜单列表
   let menuList = await getMenuList(data.role, data.roleList)
+  // 对拿到的菜单列表进行递归，拼装成我们需要的树形结构数据
   let actionList = getAction(JSON.parse(JSON.stringify(menuList)))
   ctx.body = util.success({ menuList, actionList })
 })
 
+/**
+ * 获取全量的菜单数据
+ * @param {*} userRole
+ * @param {*} roleKeys
+ * @returns
+ */
 async function getMenuList(userRole, roleKeys) {
   let rootList = []
+  // 0是管理员
   if (userRole == 0) {
     rootList = (await Menu.find({})) || []
   } else {
-    // 根据用户拥有的角色，获取权限列表
+    // 根据用户拥有的角色，获取权限列表，也就是去roles表里查询角色对应的permissionList
     // 现查找用户对应的角色有哪些
     let roleList = await Role.find({ _id: { $in: roleKeys } })
     let permissionList = []
@@ -240,7 +251,10 @@ async function getMenuList(userRole, roleKeys) {
         ...halfCheckedKeys,
       ])
     })
+
+    // 先对对权限列表做一个去重，因为用户可能有多个角色，有些角色的权限是相同的，需要去重。
     permissionList = [...new Set(permissionList)]
+    // 去菜单表menus里面查询key对应的菜单列表，最后在通过getTreeMenu拼装成前端需要的树形结构
     rootList = await Menu.find({ _id: { $in: permissionList } })
   }
   return util.getTreeMenu(rootList, null, [])

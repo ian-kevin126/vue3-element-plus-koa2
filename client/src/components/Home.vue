@@ -4,7 +4,7 @@
       <!-- 系统LOGO -->
       <div class="logo">
         <img src="./../assets/logo.png" />
-        <span>Siwooo</span>
+        <span>Manager</span>
       </div>
       <!-- 导航菜单 -->
       <el-menu
@@ -24,7 +24,6 @@
           <div class="menu-fold" @click="toggle">
             <i class="el-icon-s-fold"></i>
           </div>
-          <!-- 面包屑 -->
           <div class="bread">
             <BreadCrumb />
           </div>
@@ -69,7 +68,7 @@ export default {
   components: { TreeMenu, BreadCrumb },
   data() {
     return {
-      isCollapse: false, // 默认左侧菜单栏是收起状态
+      isCollapse: false,
       userInfo: this.$store.state.userInfo,
       noticeCount: 0,
       userMenu: [],
@@ -86,14 +85,11 @@ export default {
     this.getMenuList()
   },
   methods: {
-    // 控制左侧菜单栏的展开和收起
     toggle() {
       this.isCollapse = !this.isCollapse
     },
-    // 退出账号
     handleLogout(key) {
       if (key == 'email') return
-      // 清空vuex和storage中的用户信息
       this.$store.commit('saveUserInfo', '')
       this.userInfo = {}
       this.$router.push('/login')
@@ -108,11 +104,10 @@ export default {
     },
     async getMenuList() {
       try {
-        const res = await this.$api.getMenuList()
-        this.$store.commit('saveMenuList', res)
-        // this.$store.commit('saveActionList', actionList)
-        // console.log('res', res)
-        this.userMenu = res
+        const { menuList, actionList } = await this.$api.getPermissionList()
+        this.$store.commit('saveMenuList', menuList)
+        this.$store.commit('saveActionList', actionList)
+        this.userMenu = menuList
       } catch (error) {
         console.error(error)
       }
