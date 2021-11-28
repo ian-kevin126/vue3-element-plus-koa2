@@ -89,8 +89,9 @@ async function loadAsyncRoutes() {
       let routes = utils.generateRoute(menuList)
       routes.map((route) => {
         let url = `./../views/${route.component}.vue`
-        // 这里要注意：由于比特的问题，目前需要加一个/* @vite-ignore */以防止动态加载组件失败
+        // 这里要注意：有时候，由于vite的版本问题，目前需要加一个/* @vite-ignore */以防止动态加载组件失败
         route.component = () => import(/* @vite-ignore */ url)
+        // route.component = () => import(url)
         router.addRoute('home', route)
       })
     } catch (error) {}
