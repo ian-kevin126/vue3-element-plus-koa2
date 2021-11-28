@@ -29,8 +29,8 @@ router.post('/login', async (ctx) => {
     const res = await User.findOne(
       {
         userName,
-        // userPwd: md5(userPwd),
-        userPwd: userPwd,
+        userPwd: md5(userPwd),
+        // userPwd: userPwd,
       },
       // 指定返回的字段
       'userId userName userEmail state role deptId roleList'
@@ -223,7 +223,7 @@ router.get('/getPermissionList', async (ctx) => {
 
   // 通过角色（role）和角色权限列表（roleList）去获取菜单列表
   let menuList = await getMenuList(data.role, data.roleList)
-  // 对拿到的菜单列表进行递归，拼装成我们需要的树形结构数据
+  // 对拿到的菜单列表进行递归，拼装成我们需要的树形结构数据，menuList：菜单权限，actionList：按钮权限
   let actionList = getAction(JSON.parse(JSON.stringify(menuList)))
   ctx.body = util.success({ menuList, actionList })
 })
@@ -260,6 +260,11 @@ async function getMenuList(userRole, roleKeys) {
   return util.getTreeMenu(rootList, null, [])
 }
 
+/**
+ * 获取按钮权限
+ * @param {*} list
+ * @returns
+ */
 function getAction(list) {
   let actionList = []
   const deep = (arr) => {

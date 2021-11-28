@@ -11,6 +11,7 @@ import store from './store'
 console.log('环境变量=>', import.meta.env)
 const app = createApp(App)
 
+// 自定义指令，控制按钮的权限
 app.directive('has', {
   beforeMount: function (el, binding) {
     let actionList = storage.getItem('actionList')

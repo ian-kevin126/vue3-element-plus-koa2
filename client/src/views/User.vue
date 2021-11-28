@@ -24,14 +24,17 @@
     </div>
     <div class="base-table">
       <div class="action">
-        <el-button type="primary" @click="handleCreate">新增</el-button>
-        <el-button type="danger" @click="handlePatchDel">批量删除</el-button>
+        <el-button type="primary" @click="handleCreate" v-has="'user-create'"
+          >新增</el-button
+        >
+        <el-button
+          type="danger"
+          @click="handlePatchDel"
+          v-has="'user-patch-delete'"
+          >批量删除</el-button
+        >
       </div>
-      <el-table
-        :data="userList"
-        @selection-change="handleSelectionChange"
-        :v-loading="loading"
-      >
+      <el-table :data="userList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column
           v-for="item in columns"
@@ -44,10 +47,17 @@
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button @click="handleEdit(scope.row)" size="mini"
+            <el-button
+              @click="handleEdit(scope.row)"
+              size="mini"
+              v-has="'user-edit'"
               >编辑</el-button
             >
-            <el-button type="danger" size="mini" @click="handleDel(scope.row)"
+            <el-button
+              type="danger"
+              size="mini"
+              @click="handleDel(scope.row)"
+              v-has="'user-delete'"
               >删除</el-button
             >
           </template>
@@ -82,7 +92,7 @@
             :disabled="action == 'edit'"
             placeholder="请输入用户邮箱"
           >
-            <template #append>@163.com</template>
+            <template #append>@imooc.com</template>
           </el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="mobile">
@@ -191,7 +201,7 @@ setup() {
 
 // getCurrentInstance 支持访问内部组件实例
 import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue'
-import utils from './../utils/utils'
+import utils from '.../../utils/utils'
 export default {
   name: 'user',
   setup() {
