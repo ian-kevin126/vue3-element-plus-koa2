@@ -17,7 +17,7 @@ export default {
       url: '/leave/count',
       method: 'get',
       data: {},
-      mock: true,
+      mock: false,
     })
   },
   getMenuList(params) {
@@ -33,7 +33,7 @@ export default {
       url: '/users/getPermissionList',
       method: 'get',
       data: {},
-      mock: true,
+      mock: false,
     })
   },
   getUserList(params) {

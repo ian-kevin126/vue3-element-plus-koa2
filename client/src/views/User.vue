@@ -201,7 +201,7 @@ setup() {
 
 // getCurrentInstance 支持访问内部组件实例
 import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue'
-import utils from '.../../utils/utils'
+import utils from '@/utils/utils'
 export default {
   name: 'user',
   setup() {

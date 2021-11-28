@@ -37,6 +37,10 @@ router.post('/login', async (ctx) => {
     )
 
     if (res) {
+      /**
+       * 登录时用获取到的数据生成token 头部.负载.签名
+       */
+      // mongoose操作的结果集docs，若想要改变其结构就需要通过改变它的_doc属性
       const data = res._doc
 
       // koa-jwt 是负责对 token 进行验证的，
@@ -46,6 +50,7 @@ router.post('/login', async (ctx) => {
           data,
         },
         JWT_SECRET,
+        // 数字类型代表秒，字符串类型就是具体时间
         { expiresIn: EXPIRES_IN }
       )
       // 将token保存在用户信息中
@@ -139,14 +144,14 @@ router.post('/operate', async (ctx) => {
     // 新增功能，需要注意的是 MongoDB不同于MySQL可以自己创建自增长的id，在MongoDB里面，我们需要
     // 手动去维护一个自增长的id的表，首先要在数据库自己先创建一个表 counter，作为自增id表
     /**
-     * {
-          "_id" : "userId",
-          "sequence_value" : 1000001
-      }
-     * 下次，就会先去这个表查询对应的id，然后+1，作为新增用户的id，当然我们也可以每次在新增的时候，
-      在User表里面去查找id最后一位，然后+1，作为新用户的id，这样显然是非常耗费性能的。相比之下，我们
-      维护一个单表counters，显然是性能更好的。
-     */
+      * {
+           "_id" : "userId",
+           "sequence_value" : 1000001
+       }
+      * 下次，就会先去这个表查询对应的id，然后+1，作为新增用户的id，当然我们也可以每次在新增的时候，
+       在User表里面去查找id最后一位，然后+1，作为新用户的id，这样显然是非常耗费性能的。相比之下，我们
+       维护一个单表counters，显然是性能更好的。
+      */
 
     // 参数校验
     if (!userName || !userEmail || !deptId) {
@@ -257,6 +262,7 @@ async function getMenuList(userRole, roleKeys) {
     // 去菜单表menus里面查询key对应的菜单列表，最后在通过getTreeMenu拼装成前端需要的树形结构
     rootList = await Menu.find({ _id: { $in: permissionList } })
   }
+  console.log('rootList', rootList)
   return util.getTreeMenu(rootList, null, [])
 }
 
