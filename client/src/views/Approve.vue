@@ -108,195 +108,195 @@
   </div>
 </template>
 <script>
-import { getCurrentInstance, onMounted, reactive, ref, toRaw } from "vue";
-import utils from "../utils/utils";
+import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue'
+import utils from '../utils/utils'
 export default {
-  name: "approve",
+  name: 'approve',
   setup() {
     //   获取Composition API 上下文对象
-    const { ctx } = getCurrentInstance();
+    const { proxy } = getCurrentInstance()
     const queryForm = reactive({
       applyState: 1,
-    });
+    })
     const pager = reactive({
       pageNum: 1,
       pageSize: 10,
       total: 0,
-    });
+    })
     // 定义动态表格-格式
     const columns = reactive([
       {
-        label: "单号",
-        prop: "orderNo",
+        label: '单号',
+        prop: 'orderNo',
       },
       {
-        label: "申请人",
-        prop: "",
+        label: '申请人',
+        prop: '',
         formatter(row) {
-          return row.applyUser.userName;
+          return row.applyUser.userName
         },
       },
       {
-        label: "休假时间",
-        prop: "",
+        label: '休假时间',
+        prop: '',
         formatter(row) {
           return (
-            utils.formateDate(new Date(row.startTime), "yyyy-MM-dd") +
-            "到" +
-            utils.formateDate(new Date(row.endTime), "yyyy-MM-dd")
-          );
+            utils.formateDate(new Date(row.startTime), 'yyyy-MM-dd') +
+            '到' +
+            utils.formateDate(new Date(row.endTime), 'yyyy-MM-dd')
+          )
         },
       },
       {
-        label: "休假时长",
-        prop: "leaveTime",
+        label: '休假时长',
+        prop: 'leaveTime',
       },
       {
-        label: "休假类型",
-        prop: "applyType",
+        label: '休假类型',
+        prop: 'applyType',
         formatter(row, column, value) {
           return {
-            1: "事假",
-            2: "调休",
-            3: "年假",
-          }[value];
+            1: '事假',
+            2: '调休',
+            3: '年假',
+          }[value]
         },
       },
       {
-        label: "休假原因",
-        prop: "reasons",
+        label: '休假原因',
+        prop: 'reasons',
       },
       {
-        label: "申请时间",
-        prop: "createTime",
+        label: '申请时间',
+        prop: 'createTime',
         width: 180,
         formatter: (row, column, value) => {
-          return utils.formateDate(new Date(value));
+          return utils.formateDate(new Date(value))
         },
       },
       {
-        label: "审批人",
-        prop: "auditUsers",
+        label: '审批人',
+        prop: 'auditUsers',
       },
       {
-        label: "当前审批人",
-        prop: "curAuditUserName",
+        label: '当前审批人',
+        prop: 'curAuditUserName',
       },
       {
-        label: "审批状态",
-        prop: "applyState",
+        label: '审批状态',
+        prop: 'applyState',
         formatter: (row, column, value) => {
           // 1:待审批 2:审批中 3:审批拒绝 4:审批通过 5:作废
           return {
-            1: "待审批",
-            2: "审批中",
-            3: "审批拒绝",
-            4: "审批通过",
-            5: "作废",
-          }[value];
+            1: '待审批',
+            2: '审批中',
+            3: '审批拒绝',
+            4: '审批通过',
+            5: '作废',
+          }[value]
         },
       },
-    ]);
+    ])
     // 申请列表
-    const applyList = ref([]);
+    const applyList = ref([])
     // 创建休假弹框表单
     const leaveForm = reactive({
       applyType: 1,
-      startTime: "",
-      endTime: "",
-      leaveTime: "0天",
-      reasons: "",
-    });
+      startTime: '',
+      endTime: '',
+      leaveTime: '0天',
+      reasons: '',
+    })
 
-    const showDetailModal = ref(false);
+    const showDetailModal = ref(false)
     // 详情弹框对象
-    let detail = ref({});
-    const userInfo = ctx.$store.state.userInfo;
+    let detail = ref({})
+    const userInfo = proxy.$store.state.userInfo
     // 表单规则
     const rules = {
       remark: [
         {
           required: true,
-          message: "请输入审核备注",
-          trigger: "change",
+          message: '请输入审核备注',
+          trigger: 'change',
         },
       ],
-    };
+    }
     const auditForm = reactive({
-      remark: "",
-    });
+      remark: '',
+    })
     // 初始化接口调用
     onMounted(() => {
-      getApplyList();
-    });
+      getApplyList()
+    })
 
     // 加载申请列表
     const getApplyList = async () => {
-      let params = { ...queryForm, ...pager, type: "approve" };
-      let { list, page } = await ctx.$api.getApplyList(params);
-      applyList.value = list;
-      pager.total = page.total;
-    };
+      let params = { ...queryForm, ...pager, type: 'approve' }
+      let { list, page } = await proxy.$api.getApplyList(params)
+      applyList.value = list
+      pager.total = page.total
+    }
     // 重置查询表单
     const handleReset = (form) => {
-      ctx.$refs[form].resetFields();
-    };
+      proxy.$refs[form].resetFields()
+    }
 
     // 分页事件处理
     const handleCurrentChange = (current) => {
-      pager.pageNum = current;
-      getUserList();
-    };
+      pager.pageNum = current
+      getUserList()
+    }
     // 弹框关闭
     const handleClose = () => {
-      showDetailModal.value = false;
-      handleReset("dialogForm");
-    };
+      showDetailModal.value = false
+      handleReset('dialogForm')
+    }
 
     const handleDetail = (row) => {
-      let data = { ...row };
+      let data = { ...row }
       data.applyTypeName = {
-        1: "事假",
-        2: "调休",
-        3: "年假",
-      }[data.applyType];
+        1: '事假',
+        2: '调休',
+        3: '年假',
+      }[data.applyType]
       data.time =
-        utils.formateDate(new Date(data.startTime), "yyyy-MM-dd") +
-        "到" +
-        utils.formateDate(new Date(data.endTime), "yyyy-MM-dd");
+        utils.formateDate(new Date(data.startTime), 'yyyy-MM-dd') +
+        '到' +
+        utils.formateDate(new Date(data.endTime), 'yyyy-MM-dd')
       // 1:待审批 2:审批中 3:审批拒绝 4:审批通过 5:作废
       data.applyStateName = {
-        1: "待审批",
-        2: "审批中",
-        3: "审批拒绝",
-        4: "审批通过",
-        5: "作废",
-      }[data.applyState];
-      detail.value = data;
-      showDetailModal.value = true;
-    };
+        1: '待审批',
+        2: '审批中',
+        3: '审批拒绝',
+        4: '审批通过',
+        5: '作废',
+      }[data.applyState]
+      detail.value = data
+      showDetailModal.value = true
+    }
 
     const handleApprove = (action) => {
-      ctx.$refs.dialogForm.validate(async (valid) => {
+      proxy.$refs.dialogForm.validate(async (valid) => {
         if (valid) {
           let params = {
             action,
             remark: auditForm.remark,
             _id: detail.value._id,
-          };
+          }
           try {
-            await ctx.$api.leaveApprove(params);
-            handleClose();
-            ctx.$message.success("处理成功");
-            getApplyList();
-            ctx.$store.commit(
-              "saveNoticeCount",
-              ctx.$store.state.noticeCount - 1
-            );
+            await proxy.$api.leaveApprove(params)
+            handleClose()
+            proxy.$message.success('处理成功')
+            getApplyList()
+            proxy.$store.commit(
+              'saveNoticeCount',
+              proxy.$store.state.noticeCount - 1
+            )
           } catch (error) {}
         }
-      });
-    };
+      })
+    }
 
     return {
       queryForm,
@@ -314,7 +314,7 @@ export default {
       userInfo,
       handleDetail,
       handleApprove,
-    };
+    }
   },
-};
+}
 </script>

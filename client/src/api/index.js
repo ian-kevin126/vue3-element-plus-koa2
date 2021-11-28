@@ -168,7 +168,7 @@ export default {
       url: '/leave/list',
       method: 'get',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   leaveOperate(params) {
@@ -176,7 +176,7 @@ export default {
       url: '/leave/operate',
       method: 'post',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   leaveApprove(params) {
@@ -184,7 +184,7 @@ export default {
       url: '/leave/approve',
       method: 'post',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
 }

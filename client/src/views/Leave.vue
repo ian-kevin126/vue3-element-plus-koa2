@@ -158,7 +158,7 @@ export default {
   name: 'user',
   setup() {
     //   获取Composition API 上下文对象
-    const { ctx } = getCurrentInstance()
+    const { proxy } = getCurrentInstance()
     const queryForm = reactive({
       applyState: 1,
     })
@@ -283,13 +283,13 @@ export default {
     // 加载申请列表
     const getApplyList = async () => {
       let params = { ...queryForm, ...pager }
-      let { list, page } = await ctx.$api.getApplyList(params)
+      let { list, page } = await proxy.$api.getApplyList(params)
       applyList.value = list
       pager.total = page.total
     }
     // 重置查询表单
     const handleReset = (form) => {
-      ctx.$refs[form].resetFields()
+      proxy.$refs[form].resetFields()
     }
 
     // 分页事件处理
@@ -313,7 +313,7 @@ export default {
       let { startTime, endTime } = leaveForm
       if (!startTime || !endTime) return
       if (startTime > endTime) {
-        ctx.$message.error('开始日期不能晚于结束日期')
+        proxy.$message.error('开始日期不能晚于结束日期')
         leaveForm.leaveTime = '0天'
         setTimeout(() => {
           leaveForm[key] = ''
@@ -325,12 +325,12 @@ export default {
     }
     // 申请提交
     const handleSubmit = () => {
-      ctx.$refs.dialogForm.validate(async (valid) => {
+      proxy.$refs.dialogForm.validate(async (valid) => {
         if (valid) {
           try {
             let params = { ...leaveForm, action: action.value }
-            let res = await ctx.$api.leaveOperate(params)
-            ctx.$message.success('创建成功')
+            let res = await proxy.$api.leaveOperate(params)
+            proxy.$message.success('创建成功')
             handleClose()
             getApplyList()
           } catch (error) {}
@@ -364,8 +364,8 @@ export default {
     const handleDelete = async (_id) => {
       try {
         let params = { _id, action: 'delete' }
-        let res = await ctx.$api.leaveOperate(params)
-        ctx.$message.success('删除成功')
+        let res = await proxy.$api.leaveOperate(params)
+        proxy.$message.success('删除成功')
         getApplyList()
       } catch (error) {}
     }
