@@ -70,7 +70,7 @@ export default {
     return {
       isCollapse: false,
       userInfo: this.$store.state.userInfo,
-      noticeCount: 0,
+      // noticeCount: 0,
       userMenu: [],
       activeMenu: location.hash.slice(1),
     }

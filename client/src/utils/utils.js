@@ -31,7 +31,6 @@ export default {
     const deepList = (list) => {
       while (list.length) {
         let item = list.pop()
-        console.log('component', JSON.stringify(item.component))
         if (item.action) {
           routes.push({
             name: item.component,

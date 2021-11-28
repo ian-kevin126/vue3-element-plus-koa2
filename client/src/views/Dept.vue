@@ -176,7 +176,6 @@ export default {
       this.userList = await this.$api.getAllUserList()
     },
     handleUser(val) {
-      console.log('=>', val)
       const [userId, userName, userEmail] = val.split('/')
       Object.assign(this.deptForm, { userId, userName, userEmail })
     },

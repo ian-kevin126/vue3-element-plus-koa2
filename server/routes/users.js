@@ -262,7 +262,6 @@ async function getMenuList(userRole, roleKeys) {
     // 去菜单表menus里面查询key对应的菜单列表，最后在通过getTreeMenu拼装成前端需要的树形结构
     rootList = await Menu.find({ _id: { $in: permissionList } })
   }
-  console.log('rootList', rootList)
   return util.getTreeMenu(rootList, null, [])
 }
 
