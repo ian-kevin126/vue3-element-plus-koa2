@@ -2,7 +2,7 @@
   <div class="login-wrapper">
     <div class="modal">
       <el-form ref="userForm" :model="user" status-icon :rules="rules">
-        <div class="title">火星</div>
+        <div class="title">Siwooo后台管理系统</div>
         <el-form-item prop="userName">
           <el-input
             type="text"
