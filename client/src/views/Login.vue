@@ -23,6 +23,9 @@
           <el-button type="primary" class="btn-login" @click="login"
             >登录</el-button
           >
+          <div style="text-align: center; color: #bbb; margin-top: 18px">
+            默认的登录账号: admin_dev，密码：123456
+          </div>
         </el-form-item>
       </el-form>
     </div>
@@ -98,10 +101,11 @@ export default {
     border-radius: 4px;
     box-shadow: 0px 0 10px 3px #c7c9cb4d;
     .title {
-      font-size: 50px;
+      font-size: 22px;
       line-height: 1.5;
       text-align: center;
       margin-bottom: 30px;
+      font-weight: bold;
     }
     .btn-login {
       width: 100%;
